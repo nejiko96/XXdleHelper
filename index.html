@@ -19,48 +19,62 @@
 
           <form role="form" id="frm" target="#">
 
-            <div class="row mb-3">
-              <label for="cond" class="col-sm-2 col-form-label">Condition</label>
+            <div class="row mb-3 has-feedback">
+              <label for="param" class="col-sm-2 col-form-label">Words Tried</label>
               <div class="col-sm-10">
-                <textarea id="cond" name="cond" class="form-control" rows="3" autofocus
-                >for (var i=0; i&lt;10; i++)</textarea>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tried"
+                  name="tried"
+                  placeholder="aeros dicty"
+                />
               </div>
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="param" class="col-sm-2 col-form-label">Parameter</label>
+              <label for="expr" class="col-sm-2 col-form-label">Chars Got</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="param" name="param" value="i"/>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="got"
+                    name="got"
+                    placeholder="er"
+                  />
               </div>
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="expr" class="col-sm-2 col-form-label">Expression</label>
+              <label for="expr" class="col-sm-2 col-form-label">Allowed Pattern</label>
               <div class="col-sm-10">
-                <div class = "input-group">
-                  <input type="text" class="form-control" id="expr" name="expr" value="i*2" required/>
-                  <span class="input-group-text">3</span>
-                </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="allowed"
+                    name="allowed"
+                    placeholder=".e[r].."
+                  />
               </div>
             </div>
 
             <div class="row mb-3">
               <div class="offset-sm-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" id="run" name="run">Run</button>
+                <button type="submit" class="btn btn-primary" id="search" name="search">Search</button>
               </div>
             </div>
 
             <div class="row mb-3">
-              <label for="code" class="col-sm-2 col-form-label">Code Executed</label>
-              <div class="col-sm-10">
-                <textarea id="code" name="code" class="form-control" rows="10" disabled></textarea>
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="result" class="col-sm-2 col-form-label">Result</label>
+              <label for="code" class="col-sm-2 col-form-label">Search Result</label>
               <div class="col-sm-10">
                 <textarea id="result" name="result" class="form-control" rows="10" disabled></textarea>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="result" class="col-sm-2 col-form-label">Suggestion</label>
+              <div class="col-sm-10">
+                <textarea id="suggestion" name="suggestion" class="form-control" rows="5" disabled></textarea>
               </div>
             </div>
 
