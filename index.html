@@ -14,46 +14,50 @@
       </div>
 
       <div class="row">
-
         <div class="offset-lg-2 col-lg-8" role="main">
-
           <form role="form" id="frm" target="#">
 
             <div class="row mb-3 has-feedback">
-              <label for="param" class="col-sm-2 col-form-label">Words Tried</label>
+              <label for="tried" class="col-sm-2 col-form-label">Tried</label>
               <div class="col-sm-10">
                 <input
                   type="text"
                   class="form-control"
                   id="tried"
                   name="tried"
-                  placeholder="aeros dicty"
+                  placeholder="e.g. aeros linty"
+                  pattern="[a-zA-Z ]*"
+                  maxlength="50"
                 />
               </div>
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="expr" class="col-sm-2 col-form-label">Chars Got</label>
+              <label for="got" class="col-sm-2 col-form-label">Matched</label>
               <div class="col-sm-10">
                   <input
                     type="text"
                     class="form-control"
                     id="got"
                     name="got"
-                    placeholder="er"
+                    placeholder="e.g. loy"
+                    pattern="[a-zA-Z]*"
+                    maxlength="5"
                   />
               </div>
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="expr" class="col-sm-2 col-form-label">Allowed Pattern</label>
+              <label for="allowed" class="col-sm-2 col-form-label">Pattern</label>
               <div class="col-sm-10">
                   <input
                     type="text"
                     class="form-control"
                     id="allowed"
                     name="allowed"
-                    placeholder=".e[r].."
+                    placeholder="e.g. l..[o]y"
+                    pattern="(\.|[a-zA-Z]|\[[a-zA-Z]+\]){5}"
+                    maxlength="50"
                   />
               </div>
             </div>
@@ -65,27 +69,25 @@
             </div>
 
             <div class="row mb-3">
-              <label for="code" class="col-sm-2 col-form-label">Search Result</label>
+              <label for="result" class="col-sm-2 col-form-label">Search Result</label>
               <div class="col-sm-10">
                 <textarea id="result" name="result" class="form-control" rows="10" disabled></textarea>
               </div>
             </div>
 
             <div class="row mb-3">
-              <label for="result" class="col-sm-2 col-form-label">Suggestion</label>
+              <label for="suggestion" class="col-sm-2 col-form-label">Suggestion</label>
               <div class="col-sm-10">
                 <textarea id="suggestion" name="suggestion" class="form-control" rows="5" disabled></textarea>
               </div>
             </div>
 
           </form>
-
         </div>
-
       </div>
+
     </div>
 
-    <div id="app"></div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
