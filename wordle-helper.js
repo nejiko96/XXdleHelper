@@ -100,7 +100,7 @@ class WordleHelper {
         const sgs = this.words.map(w => {
           const r1 = [...uniq(deleteChars(w, this.tried))].reduce((r, c) => r + ch[c], 0)
           const r2 = [...w].reduce((r, c, i) => r + (this.tried.includes(c) ? 0 : ch[c + i]), 0)
-          const r3 = deleteChars(w, '^' + this.got).length
+          const r3 = deleteChars(w, `^${this.got}`).length
           return { w, r1, r2, r3 }
         })
         sgs.sort((a, b) => {

@@ -41,6 +41,14 @@ $('#frm').on('submit', () => {
   return false
 })
 
+$('#clear').on('click', () => {
+  $('#tried').val('')
+  $('#got').val('')
+  $('#allowed').val('')
+  $('#result').val('')
+  $('#suggestion').val('')
+})
+
 $('#tried,#got,#allowed').on('keydown', () => {
   $('#result').val('')
   $('#suggestion').val('')
