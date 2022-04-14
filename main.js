@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import WordleHelper from './wordle-helper'
+import NerdleHelper from './nerdle-helper'
 
 import './style.css'
 
@@ -9,7 +10,7 @@ const wdlRun = () => {
     const got = $('#txtWdlGot').val()
     const allowed = $('#txtWdlAllowed').val()
     const wordle = new WordleHelper(tried, got, allowed)
-    let resultsDisp = ''
+    let resultsDisp = []
     const results = wordle.search
     if (results.length) {
       const results10 = results.slice(0, 10)
@@ -20,7 +21,7 @@ const wdlRun = () => {
       ]
     } else {
       resultsDisp = [
-        wordle.generate,
+        wordle.generate.join(','),
         `* : ${wordle.remain}`
       ]
     }
@@ -33,7 +34,23 @@ const wdlRun = () => {
 }
 
 const ndlSuggest = () => {
-  $('#lblNdlSuggestion').val('56/7+1=9 3x8-4=20')
+  const sg = NerdleHelper.suggest
+  $('#lblNdlSuggestion').val(sg)
+}
+
+const ndlRun = () => {
+  try {
+    const got = $('#txtNdlGot').val()
+    const allowed = $('#txtNdlAllowed').val()
+    const nerdle = new NerdleHelper(got, allowed)
+    const results = nerdle.search
+    const resultsDisp = results.slice(0, 10)
+    if (results.length > 10) resultsDisp.push('...')
+    resultsDisp.push(` (total ${results.length} results)`)
+    $('#lblNdlResult').val(resultsDisp.join('\n'))
+  } catch (error) {
+    $('#lblNdlResult').val(error)
+  }
 }
 
 $(() => {
@@ -55,7 +72,7 @@ $('#txtWdlTried,#txtWdlGot,#txtWdlAllowed').on('keydown', () => {
 })
 
 $('#frmNdl').on('submit', () => {
-  $('#lblNdlResult').val(' (total 0 results)')
+  ndlRun()
   return false
 })
 

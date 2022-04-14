@@ -1,8 +1,8 @@
-import wordsContent from './words.txt?raw'
+import wordsRaw from './words.txt?raw'
 import { deleteChars, uniq, permutation } from './util'
 
 class WordleHelper {
-  static __words = wordsContent.split('\n')
+  static __words = wordsRaw.split('\n')
 
   static get ALL_CHARS() {
     return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
