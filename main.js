@@ -32,8 +32,13 @@ const wdlRun = () => {
   }
 }
 
+const ndlSuggest = () => {
+  $('#lblNdlSuggestion').val('56/7+1=9 3x8-4=20')
+}
+
 $(() => {
   wdlRun()
+  ndlSuggest()
 })
 
 $('#frmWdl').on('submit', () => {
@@ -47,4 +52,17 @@ $('#btnWdlClear').on('click', () => {
 
 $('#txtWdlTried,#txtWdlGot,#txtWdlAllowed').on('keydown', () => {
   $('#lblWdlResult,#lblWdlSuggestion').val('')
+})
+
+$('#frmNdl').on('submit', () => {
+  $('#lblNdlResult').val(' (total 0 results)')
+  return false
+})
+
+$('#btnNdlClear').on('click', () => {
+  $('#txtNdlGot,#txtNdlAllowed,#lblNdlResult').val('')
+})
+
+$('#txtNdlGot,#txtNdlAllowed').on('keydown', () => {
+  $('#lblNdlResult').val('')
 })
