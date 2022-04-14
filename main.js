@@ -3,12 +3,12 @@ import WordleHelper from './wordle-helper'
 
 import './style.css'
 
-const run = () => {
+const wdlRun = () => {
   try {
-    const tried = $('#tried').val()
-    const got = $('#got').val()
-    const allowed = $('#allowed').val()
-    const wordle = new WordleHelper(tried, got, allowed.length ? allowed : '.....')
+    const tried = $('#txtWdlTried').val()
+    const got = $('#txtWdlGot').val()
+    const allowed = $('#txtWdlAllowed').val()
+    const wordle = new WordleHelper(tried, got, allowed)
     let resultsDisp = ''
     const results = wordle.search
     if (results.length) {
@@ -24,32 +24,27 @@ const run = () => {
         `* : ${wordle.remain}`
       ]
     }
-    $('#result').val(resultsDisp.join('\n'))
+    $('#lblWdlResult').val(resultsDisp.join('\n'))
     const sgs = wordle.suggest.slice(0, 5)
-    $('#suggestion').val(sgs.map(sg => `${sg.w}(${[sg.r1, sg.r2, sg.r3].join('-')})`).join('\n'))
+    $('#lblWdlSuggestion').val(sgs.map(sg => `${sg.w}(${[sg.r1, sg.r2, sg.r3].join('-')})`).join('\n'))
   } catch (error) {
-    $('#result').val(error)
+    $('#lblWdlResult').val(error)
   }
 }
 
 $(() => {
-  run()
+  wdlRun()
 })
 
-$('#frm').on('submit', () => {
-  run()
+$('#frmWdl').on('submit', () => {
+  wdlRun()
   return false
 })
 
-$('#clear').on('click', () => {
-  $('#tried').val('')
-  $('#got').val('')
-  $('#allowed').val('')
-  $('#result').val('')
-  $('#suggestion').val('')
+$('#btnWdlClear').on('click', () => {
+  $('#txtWdlTried,#txtWdlGot,#txtWdlAllowed,#lblWdlResult,#lblWdlSuggestion').val('')
 })
 
-$('#tried,#got,#allowed').on('keydown', () => {
-  $('#result').val('')
-  $('#suggestion').val('')
+$('#txtWdlTried,#txtWdlGot,#txtWdlAllowed').on('keydown', () => {
+  $('#lblWdlResult,#lblWdlSuggestion').val('')
 })

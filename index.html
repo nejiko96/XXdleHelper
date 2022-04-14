@@ -15,16 +15,16 @@
 
       <div class="row">
         <div class="offset-lg-2 col-lg-8" role="main">
-          <form role="form" id="frm" target="#">
+          <form role="form" id="frmWdl" target="#">
 
             <div class="row mb-3 has-feedback">
-              <label for="tried" class="col-sm-2 col-form-label">Tried</label>
+              <label for="txtWdlTried" class="col-sm-2 col-form-label">Tried</label>
               <div class="col-sm-10">
                 <input
                   type="text"
                   class="form-control"
-                  id="tried"
-                  name="tried"
+                  id="txtWdlTried"
+                  name="txtWdlTried"
                   placeholder="e.g. aeros linty"
                   pattern="[a-zA-Z ]*"
                   maxlength="50"
@@ -33,13 +33,13 @@
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="got" class="col-sm-2 col-form-label">Matched</label>
+              <label for="txtWdlGot" class="col-sm-2 col-form-label">Matched</label>
               <div class="col-sm-10">
                   <input
                     type="text"
                     class="form-control"
-                    id="got"
-                    name="got"
+                    id="txtWdlGot"
+                    name="txtWdlGot"
                     placeholder="e.g. loy"
                     pattern="[a-zA-Z]*"
                     maxlength="5"
@@ -48,13 +48,13 @@
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="allowed" class="col-sm-2 col-form-label">Pattern</label>
+              <label for="txtWdlAllowed" class="col-sm-2 col-form-label">Pattern</label>
               <div class="col-sm-10">
                   <input
                     type="text"
                     class="form-control"
-                    id="allowed"
-                    name="allowed"
+                    id="txtWdlAllowed"
+                    name="txtWdlAllowed"
                     placeholder="e.g. l..[o]y"
                     pattern="(\.|[a-zA-Z]|\[[a-zA-Z]+\]){5}"
                     maxlength="50"
@@ -64,22 +64,22 @@
 
             <div class="row mb-3">
               <div class="offset-sm-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" id="search" name="search">Search</button>
-                <button type="button" class="btn btn-secondary" id="clear" name="clear">Clear</button>
+                <button type="submit" class="btn btn-primary" id="btnWdlSearch" name="btnWdlSearch">Search</button>
+                <button type="button" class="btn btn-secondary" id="btnWdlClear" name="btnWdlClear">Clear</button>
               </div>
             </div>
 
             <div class="row mb-3">
-              <label for="result" class="col-sm-2 col-form-label">Search Result</label>
+              <label for="lblWdlResult" class="col-sm-2 col-form-label">Search Result</label>
               <div class="col-sm-10">
-                <textarea id="result" name="result" class="form-control" rows="3" disabled></textarea>
+                <textarea id="lblWdlResult" name="lblWdlResult" class="form-control" rows="3" disabled></textarea>
               </div>
             </div>
 
             <div class="row mb-3">
-              <label for="suggestion" class="col-sm-2 col-form-label">Suggestion</label>
+              <label for="lblWdlSuggestion" class="col-sm-2 col-form-label">Suggestion</label>
               <div class="col-sm-10">
-                <textarea id="suggestion" name="suggestion" class="form-control" rows="5" disabled></textarea>
+                <textarea id="lblWdlSuggestion" name="lblWdlSuggestion" class="form-control" rows="5" disabled></textarea>
               </div>
             </div>
 

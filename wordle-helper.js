@@ -11,7 +11,7 @@ class WordleHelper {
   constructor(tried, got, allowed) {
     this._tried = deleteChars(tried.toUpperCase(), '^A-Z')
     this._got = deleteChars(got.toUpperCase(), '^A-Z')
-    this._allowed = allowed.toUpperCase().replace(/\[\^?/g, '[^')
+    this._allowed = (allowed.length ? allowed : '.....').toUpperCase().replace(/\[\^?/g, '[^')
   }
 
   get tried() {
