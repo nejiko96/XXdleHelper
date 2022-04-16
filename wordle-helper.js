@@ -1,16 +1,14 @@
 import wordsRaw from './words.txt?raw'
-import { deleteChars, uniq, permutation } from './util'
+import { deleteChars, selectChars, uniq, permutation } from './util'
+
+const ALL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class WordleHelper {
   static __words = wordsRaw.split('\n')
 
-  static get ALL_CHARS() {
-    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  }
-
   constructor(tried, got, allowed) {
-    this._tried = deleteChars(tried.toUpperCase(), '^A-Z')
-    this._got = deleteChars(got.toUpperCase(), '^A-Z')
+    this._tried = selectChars(tried.toUpperCase(), ALL_CHARS)
+    this._got = selectChars(got.toUpperCase(), ALL_CHARS)
     this._allowed = (allowed.length ? allowed : '.....').toUpperCase().replace(/\[\^?/g, '[^')
   }
 
@@ -32,7 +30,7 @@ class WordleHelper {
 
   get excludePat() {
     if (this._excludePat === undefined) {
-      const otherChars = uniq(deleteChars(this.tried, this.got))
+      const otherChars = deleteChars(uniq(this.tried), this.got)
       this._excludePat = new RegExp(`[_${otherChars}]`)
     }
     return this._excludePat
@@ -64,18 +62,18 @@ class WordleHelper {
 
   get remain() {
     if (this._remain === undefined) {
-      this._remain = deleteChars(WordleHelper.ALL_CHARS, this.tried)
+      this._remain = deleteChars(ALL_CHARS, this.tried)
     }
     return this._remain
   }
 
   get charHist() {
     if (this._charHist === undefined) {
-      const h = [...WordleHelper.ALL_CHARS].reduce((o, c) => {
-        o[c] = 0
-        for (let i = 0; i < 5; i++) o[c + i] = 0
-        return o
-      },{})
+      const h = new Proxy({}, {
+        get: (object, property) => {
+          return property in object ? object[property] : 0
+        }
+      })
       if (this.search.length) {
         this.search.forEach(w => {
           [...w].forEach((c, i) => {
@@ -100,7 +98,7 @@ class WordleHelper {
         const sgs = this.words.map(w => {
           const r1 = [...uniq(deleteChars(w, this.tried))].reduce((r, c) => r + ch[c], 0)
           const r2 = [...w].reduce((r, c, i) => r + (this.tried.includes(c) ? 0 : ch[c + i]), 0)
-          const r3 = deleteChars(w, `^${this.got}`).length
+          const r3 = selectChars(w, this.got).length
           return { w, r1, r2, r3 }
         })
         sgs.sort((a, b) => {

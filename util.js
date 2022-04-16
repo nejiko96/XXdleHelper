@@ -1,5 +1,13 @@
+const escapeRe = (str) => {
+  return str.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&')
+}
+
 const deleteChars = (str, chars) => {
-  return str.replace(new RegExp(`[${chars}}]`, 'g'), '')
+  return str.replace(new RegExp(`[${chars}]`, 'g'), '')
+}
+
+const selectChars = (str, chars) => {
+  return str.replace(new RegExp(`[^${chars}]`, 'g'), '')
 }
 
 const uniq = (obj) => {
@@ -33,6 +41,7 @@ const permutation = (obj) => {
 
 export {
   deleteChars,
+  selectChars,
   uniq,
   permutation
 }

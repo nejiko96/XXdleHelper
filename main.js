@@ -13,10 +13,10 @@ const wdlRun = () => {
     let resultsDisp = []
     const results = wordle.search
     if (results.length) {
-      const results10 = results.slice(0, 10)
-      if (results.length > 10) results10.push('...')
+      const resultsTop = results.slice(0, 10)
+      if (results.length > 10) resultsTop.push('...')
       resultsDisp = [
-        results10.join(' '),
+        resultsTop.join(' '),
         ` (total ${results.length} words)`
       ]
     } else {
