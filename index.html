@@ -18,16 +18,16 @@
           <form role="form" id="frmWdl" target="#">
 
             <div class="row mb-3 has-feedback">
-              <label for="txtWdlTried" class="col-sm-2 col-form-label">Tried</label>
+              <label for="txtWdlHint" class="col-sm-2 col-form-label">Hint</label>
               <div class="col-sm-10">
                 <input
                   type="text"
                   class="form-control"
-                  id="txtWdlTried"
-                  name="txtWdlTried"
-                  placeholder="e.g. aeros linty"
+                  id="txtWdlHint"
+                  name="txtWdlHint"
+                  placeholder="e.g. a?er?os unl?i!t f!a?dge"
                   pattern="[a-zA-Z!? ]*"
-                  maxlength="50"
+                  maxlength="55"
                 />
               </div>
             </div>
@@ -79,31 +79,16 @@
             </div>
 
             <div class="row mb-3 has-feedback">
-              <label for="txtNdlGot" class="col-sm-2 col-form-label">Matched</label>
+              <label for="txtNdlHint" class="col-sm-2 col-form-label">Hint</label>
               <div class="col-sm-10">
                   <input
                     type="text"
                     class="form-control"
-                    id="txtNdlGot"
-                    name="txtNdlGot"
-                    placeholder="e.g. 2457+*"
-                    pattern="[0-9=+*/-]*"
-                    maxlength="8"
-                  />
-              </div>
-            </div>
-
-            <div class="row mb-3 has-feedback">
-              <label for="txtNdlAllowed" class="col-sm-2 col-form-label">Pattern</label>
-              <div class="col-sm-10">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="txtNdlAllowed"
-                    name="txtNdlAllowed"
-                    placeholder="e.g. 5*.[7][4+]=[=2]."
-                    pattern="(\.|[0-9=+*/-]|\[[0-9=+*/-]+\]){8}"
-                    maxlength="50"
+                    id="txtNdlHint"
+                    name="txtNdlHint"
+                    placeholder="e.g. 42?/?6+0=!7? 3!*!8-5=?1?9!"
+                    pattern="[0-9=+*/!? -]*"
+                    maxlength="101"
                   />
               </div>
             </div>

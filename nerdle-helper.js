@@ -1,5 +1,5 @@
 import samplesRaw from './nerdle-samples.txt?raw'
-import { deleteChars, selectChars, repeatedPermutation } from './util'
+import { deleteChars, selectChars, uniq, repeatedPermutation } from './util'
 
 const ALL_DIGITS = '0123456789'
 const ALL_OPS = '+*/-'
@@ -102,16 +102,45 @@ class NerdleHelper {
     return NerdleHelper.__samples[Math.floor(Math.random() * NerdleHelper.__samples.length)]
   }
 
-  constructor(got, allowed) {
-    this._got = selectChars(got, ALL_CHARS)
-    this._allowed = (allowed.length ? allowed : '........').replace(/\[\^?/g, '[^')
+  constructor(hint) {
+    this._hint = hint
   }
 
   get got() {
+    if (this._got === undefined) {
+      const gotRaw = (this._hint.match(/[0-9+*/=-](!|\?)/g) || []).join('')
+      this._got = uniq(selectChars(gotRaw, ALL_CHARS))
+    }
     return this._got
   }
 
   get allowed() {
+    if (this._allowed === undefined) {
+      const arr = [...'........']
+      const ts = this._hint.match(/[0-9+*/=-](!|\?)?/g) || []
+      ts.forEach((t, i) => {
+        const [c, q] = [...t]
+        const j = i % 8
+        if (q == '!') {
+          arr[j] = c
+        } else if (q == '?') {
+          if (arr[j] == '.') {
+            arr[j] = new Set()
+          }
+          if (arr[j] instanceof Set) {
+            arr[j].add(c)
+          }
+        }
+      })
+      this._allowed = ''
+      arr.forEach((o, j) => {
+        if (o instanceof Set) {
+          this._allowed += '[^' + [...o].join('') + ']'
+        } else {
+          this._allowed += o
+        }
+      })
+    }
     return this._allowed
   }
 
@@ -194,6 +223,7 @@ class NerdleHelper {
 
   get debug() {
     return [
+      this._hint,
       this.got,
       this.allowed,
       this.digits,

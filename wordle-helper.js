@@ -6,20 +6,21 @@ const ALL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 class WordleHelper {
   static __words = wordsRaw.split('\n')
 
-  constructor(input) {
-    this._input = input.toUpperCase()
+  constructor(hint) {
+    this._hint = hint.toUpperCase()
   }
 
   get tried() {
     if (this._tried === undefined) {
-      this._tried = uniq(selectChars(this._input, ALL_CHARS))
+      this._tried = uniq(selectChars(this._hint, ALL_CHARS))
     }
     return this._tried
   }
 
   get got() {
     if (this._got === undefined) {
-      this._got = uniq(selectChars((this._input.match(/[A-Z](!|\?)/g) || []).join(''), ALL_CHARS))
+      const gotRaw = (this._hint.match(/[A-Z](!|\?)/g) || []).join('')
+      this._got = uniq(selectChars(gotRaw, ALL_CHARS))
     }
     return this._got
   }
@@ -27,7 +28,7 @@ class WordleHelper {
   get allowed() {
     if (this._allowed === undefined) {
       const arr = [...'.....']
-      const ts = this._input.match(/[A-Z](!|\?)?/g) || []
+      const ts = this._hint.match(/[A-Z](!|\?)?/g) || []
       ts.forEach((t, i) => {
         const [c, q] = [...t]
         const j = i % 5
@@ -145,7 +146,7 @@ class WordleHelper {
 
   get debug() {
     return [
-      this._input,
+      this._hint,
       this.tried,
       this.got,
       this.allowed,

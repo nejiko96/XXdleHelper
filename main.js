@@ -6,7 +6,7 @@ import './style.css'
 
 const wdlRun = () => {
   try {
-    const tried = $('#txtWdlTried').val()
+    const tried = $('#txtWdlHint').val()
     const wordle = new WordleHelper(tried)
     let resultsDisp = []
     const results = wordle.search
@@ -39,15 +39,17 @@ const ndlSuggest = () => {
 
 const ndlRun = () => {
   try {
-    const got = $('#txtNdlGot').val()
+    const got = $('#txtNdlHint').val()
     const allowed = $('#txtNdlAllowed').val()
-    const nerdle = new NerdleHelper(got, allowed)
+    const nerdle = new NerdleHelper(got)
+    console.log(nerdle.debug)
     const results = nerdle.search
     const resultsDisp = results.slice(0, 10)
     if (results.length > 10) resultsDisp.push('...')
     resultsDisp.push(` (total ${results.length} results)`)
     $('#lblNdlResult').val(resultsDisp.join('\n'))
   } catch (error) {
+    console.log(error)
     $('#lblNdlResult').val(error)
   }
 }
@@ -63,14 +65,14 @@ $('#frmWdl').on('submit', () => {
 })
 
 $('#btnWdlClear').on('click', () => {
-  $('#txtWdlTried,#lblWdlResult,#lblWdlSuggestion').val('')
+  $('#txtWdlHint,#lblWdlResult,#lblWdlSuggestion').val('')
 })
 
-$('#txtWdlTried').on('keydown', () => {
+$('#txtWdlHint').on('keydown', () => {
   $('#lblWdlResult,#lblWdlSuggestion').val('')
 })
 
-$('#txtWdlTried').on('blur', (e) => {
+$('#txtWdlHint').on('blur', (e) => {
   $(e.target).val($(e.target).val().toUpperCase())
 })
 
@@ -80,9 +82,9 @@ $('#frmNdl').on('submit', () => {
 })
 
 $('#btnNdlClear').on('click', () => {
-  $('#txtNdlGot,#txtNdlAllowed,#lblNdlResult').val('')
+  $('#txtNdlHint,#lblNdlResult').val('')
 })
 
-$('#txtNdlGot,#txtNdlAllowed').on('keydown', () => {
+$('#txtNdlHint').on('keydown', () => {
   $('#lblNdlResult').val('')
 })
