@@ -7,9 +7,7 @@ import './style.css'
 const wdlRun = () => {
   try {
     const tried = $('#txtWdlTried').val()
-    const got = $('#txtWdlGot').val()
-    const allowed = $('#txtWdlAllowed').val()
-    const wordle = new WordleHelper(tried, got, allowed)
+    const wordle = new WordleHelper(tried)
     let resultsDisp = []
     const results = wordle.search
     if (results.length) {
@@ -29,6 +27,7 @@ const wdlRun = () => {
     const sgs = wordle.suggest.slice(0, 5)
     $('#lblWdlSuggestion').val(sgs.map(sg => `${sg.w}(${[sg.r1, sg.r2, sg.r3].join('-')})`).join('\n'))
   } catch (error) {
+    console.log(error)
     $('#lblWdlResult').val(error)
   }
 }
@@ -64,11 +63,15 @@ $('#frmWdl').on('submit', () => {
 })
 
 $('#btnWdlClear').on('click', () => {
-  $('#txtWdlTried,#txtWdlGot,#txtWdlAllowed,#lblWdlResult,#lblWdlSuggestion').val('')
+  $('#txtWdlTried,#lblWdlResult,#lblWdlSuggestion').val('')
 })
 
-$('#txtWdlTried,#txtWdlGot,#txtWdlAllowed').on('keydown', () => {
+$('#txtWdlTried').on('keydown', () => {
   $('#lblWdlResult,#lblWdlSuggestion').val('')
+})
+
+$('#txtWdlTried').on('blur', (e) => {
+  $(e.target).val($(e.target).val().toUpperCase())
 })
 
 $('#frmNdl').on('submit', () => {

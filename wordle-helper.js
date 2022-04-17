@@ -6,21 +6,51 @@ const ALL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 class WordleHelper {
   static __words = wordsRaw.split('\n')
 
-  constructor(tried, got, allowed) {
-    this._tried = selectChars(tried.toUpperCase(), ALL_CHARS)
-    this._got = selectChars(got.toUpperCase(), ALL_CHARS)
-    this._allowed = (allowed.length ? allowed : '.....').toUpperCase().replace(/\[\^?/g, '[^')
+  constructor(input) {
+    this._input = input.toUpperCase()
   }
 
   get tried() {
+    if (this._tried === undefined) {
+      this._tried = uniq(selectChars(this._input, ALL_CHARS))
+    }
     return this._tried
   }
 
   get got() {
+    if (this._got === undefined) {
+      this._got = uniq(selectChars((this._input.match(/[A-Z](!|\?)/g) || []).join(''), ALL_CHARS))
+    }
     return this._got
   }
 
   get allowed() {
+    if (this._allowed === undefined) {
+      const arr = [...'.....']
+      const ts = this._input.match(/[A-Z](!|\?)?/g) || []
+      ts.forEach((t, i) => {
+        const [c, q] = [...t]
+        const j = i % 5
+        if (q == '!') {
+          arr[j] = c
+        } else if (q == '?') {
+          if (arr[j] == '.') {
+            arr[j] = new Set()
+          }
+          if (arr[j] instanceof Set) {
+            arr[j].add(c)
+          }
+        }
+      })
+      this._allowed = ''
+      arr.forEach((o, j) => {
+        if (o instanceof Set) {
+          this._allowed += '[^' + [...o].join('') + ']'
+        } else {
+          this._allowed += o
+        }
+      })
+    }
     return this._allowed
   }
 
@@ -30,7 +60,7 @@ class WordleHelper {
 
   get excludePat() {
     if (this._excludePat === undefined) {
-      const otherChars = deleteChars(uniq(this.tried), this.got)
+      const otherChars = deleteChars(this.tried, this.got)
       this._excludePat = new RegExp(`[_${otherChars}]`)
     }
     return this._excludePat
@@ -115,6 +145,7 @@ class WordleHelper {
 
   get debug() {
     return [
+      this._input,
       this.tried,
       this.got,
       this.allowed,
