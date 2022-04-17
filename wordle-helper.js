@@ -107,11 +107,20 @@ class WordleHelper {
           if (a.r3 != b.r3) return b.r3 - a.r3
           return a.w.localeCompare(b.w)
         })
-
         this._suggest = sgs
       }
     }
     return this._suggest
+  }
+
+  get debug() {
+    return [
+      this.tried,
+      this.got,
+      this.allowed,
+      this.excludePat,
+      this.includePat
+    ]
   }
 }
 
