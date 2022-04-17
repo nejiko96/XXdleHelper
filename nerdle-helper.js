@@ -1,5 +1,5 @@
 import samplesRaw from './nerdle-samples.txt?raw'
-import { deleteChars, selectChars } from './util'
+import { deleteChars, selectChars, repeatedPermutation } from './util'
 
 const ALL_DIGITS = '0123456789'
 const ALL_OPS = '+*/-'
@@ -56,10 +56,13 @@ class NerdleHelper {
     if (this._nums === undefined) {
       const ds = new Set([...this.digits])
       const d0 = new Set(['0'])
-      const zero = ds.intersection(d0)
-      const top = ds.difference(d0)
-      // TODO JS版はめんどい
-      this._nums = selectChars(this.got, ALL_DIGITS)
+      const all = [...ds].join('')
+      const zero = [...ds.intersection(d0)]
+      const top = [...ds.difference(d0)]
+      const succ = [1, 2, 3, 4].flatMap(k => repeatedPermutation(all, k - 1))
+      const nonzero = top.flatMap(t => succ.map(s => t + s))
+      // this._nums = [all, zero.join(''), top.join('')]
+      this._nums = zero.concat(nonzero)
     }
     return this._nums
   }
@@ -73,8 +76,8 @@ class NerdleHelper {
 
   get excludePat() {
     if (this._excludePat === undefined) {
-      const otherChars = deleteChars(ALL_DIGITS, this.got)
-      this._excludePat = new RegExp(`[_${otherChars}]`)
+      const otherDigits = deleteChars(ALL_DIGITS, this.got)
+      this._excludePat = new RegExp(`[_${otherDigits}]`)
     }
     return this._excludePat
   }
@@ -97,7 +100,8 @@ class NerdleHelper {
       this.digits,
       this.ops,
       this.excludePat,
-      this.includePat
+      this.includePat,
+      this.nums
     ]
   }
 }
