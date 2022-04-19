@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.17e50649.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XXDle Helper</title>
+    <script type="module" crossorigin src="/assets/index.65036c9a.js"></script>
+    <link rel="stylesheet" href="/assets/index.40d93ab2.css">
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="pb-2 mt-4 mb-2 border-bottom">
+        <h1>Wordle Helper</h1>
+      </div>
+
+      <div class="row">
+        <div class="offset-lg-2 col-lg-8" role="main">
+          <form role="form" id="frmWdl" target="#">
+
+            <div class="row mb-3 has-feedback">
+              <label for="txtWdlHint" class="col-sm-2 col-form-label">Hint</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtWdlHint"
+                  name="txtWdlHint"
+                  placeholder="e.g. a?er?os unl?i!t f!a?dge"
+                  pattern="[a-zA-Z!? ]*"
+                  maxlength="55"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="btnWdlSearch" name="btnWdlSearch">Search</button>
+                <button type="button" class="btn btn-secondary" id="btnWdlClear" name="btnWdlClear">Clear</button>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="lblWdlResult" class="col-sm-2 col-form-label">Search Result</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="lblWdlResult" name="lblWdlResult" rows="3" disabled></textarea>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="lblWdlSuggestion" class="col-sm-2 col-form-label">Suggestion</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="lblWdlSuggestion" name="lblWdlSuggestion" rows="5" disabled></textarea>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="pb-2 mt-4 mb-2 border-bottom">
+        <h1>Nerdle Helper</h1>
+      </div>
+
+      <div class="row">
+        <div class="offset-lg-2 col-lg-8" role="main">
+          <form role="form" id="frmNdl" target="#">
+
+            <div class="row mb-3">
+              <label for="lblNdlSuggestion" class="col-sm-2 col-form-label">Suggestion</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lblNdlSuggestion"
+                  name="lblWdlSuggestion"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3 has-feedback">
+              <label for="txtNdlHint" class="col-sm-2 col-form-label">Hint</label>
+              <div class="col-sm-10">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="txtNdlHint"
+                    name="txtNdlHint"
+                    placeholder="e.g. 42?/?6+0=!7? 3!*!8-5=?1?9!"
+                    pattern="[0-9=+*/!? -]*"
+                    maxlength="101"
+                  />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="btnNdlSearch" name="btnNdlSearch">Search</button>
+                <button type="button" class="btn btn-secondary" id="btnNdlClear" name="btnNdlClear">Clear</button>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="lblNdlResult" class="col-sm-2 col-form-label">Search Result</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="lblNdlResult" name="lblNdlResult" rows="5" disabled></textarea>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    
+  </body>
+</html>
