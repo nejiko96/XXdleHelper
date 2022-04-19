@@ -5,9 +5,9 @@ const ALL_DIGITS = '0123456789'
 const ALL_OPS = '+*/-'
 const ALL_CHARS = ALL_DIGITS + '=' + ALL_OPS
 
-const escapeOps = (str) => {
-  return str.replace(/[*+\/=]/g, '\\$&')
-}
+const escapeOps = (str) => str.replace(/[*+\/=]/g, '\\$&')
+const escapeMinus = (str) => str.replace(/-/g, '\\$&')
+
 Set.prototype.intersection = function(setB) {
   var intersection = new Set();
   for (var elem of setB) {
@@ -103,51 +103,33 @@ class NerdleHelper {
   }
 
   constructor(hint) {
-    this._hint = hint
+    const hs = hint.match(/[0-9+*/=-](!|\?)?/g) || []
+    this._got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
+    const arr = new Array(8).fill(null)
+    hs.forEach((h, i) => {
+      const [c, m] = [...h]
+      const j = i % 8
+      if (m == '!') {
+        arr[j] = c
+      } else if (m == '?') {
+        (arr[j] ||= new Set()).add && arr[j].add(c)
+      }
+    })
+    this._allowed = arr
+    this._digits = selectChars(this._got, ALL_DIGITS)
+    this._ops = [...selectChars(this._got, ALL_OPS)]
+    this._otherDigits = deleteChars(ALL_DIGITS, this._digits)
   }
 
   get got() {
-    if (this._got === undefined) {
-      const gotRaw = (this._hint.match(/[0-9+*/=-](!|\?)/g) || []).join('')
-      this._got = uniq(selectChars(gotRaw, ALL_CHARS))
-    }
     return this._got
   }
 
   get allowed() {
-    if (this._allowed === undefined) {
-      const arr = [...'........']
-      const ts = this._hint.match(/[0-9+*/=-](!|\?)?/g) || []
-      ts.forEach((t, i) => {
-        const [c, q] = [...t]
-        const j = i % 8
-        if (q == '!') {
-          arr[j] = c
-        } else if (q == '?') {
-          if (arr[j] == '.') {
-            arr[j] = new Set()
-          }
-          if (arr[j] instanceof Set) {
-            arr[j].add(c)
-          }
-        }
-      })
-      this._allowed = ''
-      arr.forEach((o, j) => {
-        if (o instanceof Set) {
-          this._allowed += '[^' + [...o].join('') + ']'
-        } else {
-          this._allowed += o
-        }
-      })
-    }
     return this._allowed
   }
 
   get digits() {
-    if (this._digits === undefined) {
-      this._digits = selectChars(this.got, ALL_DIGITS)
-    }
     return this._digits
   }
 
@@ -165,25 +147,26 @@ class NerdleHelper {
   }
 
   get ops() {
-    if (this._ops === undefined) {
-      this._ops = [...selectChars(this.got, ALL_OPS)]
-    }
     return this._ops
+  }
+
+  get otherDigits() {
+    return this._otherDigits
   }
 
   get excludePat() {
     if (this._excludePat === undefined) {
-      const otherDigits = deleteChars(ALL_DIGITS, this.digits)
-      this._excludePat = new RegExp(`[_${otherDigits}]`)
+      this._excludePat = new RegExp(`[_${this.otherDigits}]`)
     }
     return this._excludePat
   }
 
   get includePat() {
     if (this._includePat === undefined) {
-      const gs = [...this.got]
-      const containsRe = gs.map(c => `(?=.*${escapeOps(c)})`).join('')
-      const allowedRe = escapeOps(this.allowed)
+      const containsRe = [...this.got].map(c => `(?=.*${escapeOps(c)})`).join('')
+      const allowedRe = this.allowed.map(e =>
+        (e && e.add && '[^' + escapeMinus([...e].join('')) + ']') || (e && escapeOps(e)) || '.'
+      ).join('')
       this._includePat = new RegExp(`^${containsRe}${allowedRe}$`)
     }
     return this._includePat
@@ -219,19 +202,6 @@ class NerdleHelper {
       this.#dfs([])
     }
     return this._search
-  }
-
-  get debug() {
-    return [
-      this._hint,
-      this.got,
-      this.allowed,
-      this.digits,
-      this.nums,
-      this.ops,
-      this.excludePat,
-      this.includePat
-    ]
   }
 }
 

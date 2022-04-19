@@ -6,8 +6,9 @@ import './style.css'
 
 const wdlRun = () => {
   try {
-    const tried = $('#txtWdlHint').val()
-    const wordle = new WordleHelper(tried)
+    const hint = $('#txtWdlHint').val()
+    const wordle = new WordleHelper(hint)
+    console.log(wordle)
     let resultsDisp = []
     const results = wordle.search
     if (results.length) {
@@ -39,10 +40,9 @@ const ndlSuggest = () => {
 
 const ndlRun = () => {
   try {
-    const got = $('#txtNdlHint').val()
-    const allowed = $('#txtNdlAllowed').val()
-    const nerdle = new NerdleHelper(got)
-    console.log(nerdle.debug)
+    const hint = $('#txtNdlHint').val()
+    const nerdle = new NerdleHelper(hint)
+    console.log(nerdle)
     const results = nerdle.search
     const resultsDisp = results.slice(0, 10)
     if (results.length > 10) resultsDisp.push('...')

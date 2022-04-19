@@ -7,52 +7,42 @@ class WordleHelper {
   static __words = wordsRaw.split('\n')
 
   constructor(hint) {
-    this._hint = hint.toUpperCase()
+    const hs = hint.toUpperCase().match(/[A-Z](!|\?)?/g) || []
+    this._tried = uniq(hs.map(h => h[0])).join('')
+    this._got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
+    const arr = new Array(5).fill(null)
+    hs.forEach((h, i) => {
+      const [c, m] = [...h]
+      const j = i % 5
+      if (m == '!') {
+        arr[j] = c
+      } else if (m == '?') {
+        (arr[j] ||= new Set()).add && arr[j].add(c)
+      }
+    })
+    this._allowed = arr
+    this._others = deleteChars(this._tried, this._got)
+    this._remain = deleteChars(ALL_CHARS, this.tried)
   }
 
   get tried() {
-    if (this._tried === undefined) {
-      this._tried = uniq(selectChars(this._hint, ALL_CHARS))
-    }
     return this._tried
   }
 
   get got() {
-    if (this._got === undefined) {
-      const gotRaw = (this._hint.match(/[A-Z](!|\?)/g) || []).join('')
-      this._got = uniq(selectChars(gotRaw, ALL_CHARS))
-    }
     return this._got
   }
 
   get allowed() {
-    if (this._allowed === undefined) {
-      const arr = [...'.....']
-      const ts = this._hint.match(/[A-Z](!|\?)?/g) || []
-      ts.forEach((t, i) => {
-        const [c, q] = [...t]
-        const j = i % 5
-        if (q == '!') {
-          arr[j] = c
-        } else if (q == '?') {
-          if (arr[j] == '.') {
-            arr[j] = new Set()
-          }
-          if (arr[j] instanceof Set) {
-            arr[j].add(c)
-          }
-        }
-      })
-      this._allowed = ''
-      arr.forEach((o, j) => {
-        if (o instanceof Set) {
-          this._allowed += '[^' + [...o].join('') + ']'
-        } else {
-          this._allowed += o
-        }
-      })
-    }
     return this._allowed
+  }
+
+  get others() {
+    return this._others
+  }
+
+  get remain() {
+    return this._remain
   }
 
   get words() {
@@ -61,16 +51,16 @@ class WordleHelper {
 
   get excludePat() {
     if (this._excludePat === undefined) {
-      const otherChars = deleteChars(this.tried, this.got)
-      this._excludePat = new RegExp(`[_${otherChars}]`)
+      this._excludePat = new RegExp(`[_${this.others}]`)
     }
     return this._excludePat
   }
 
   get includePat() {
     if (this._includePat === undefined) {
-      const contains = [...this.got].map(c => `(?=.*${c})`).join('')
-      this._includePat = new RegExp(`^${contains}${this.allowed}$`)
+      const containsRe = [...this.got].map(c => `(?=.*${c})`).join('')
+      const allowedRe = this._allowed.map(e => (e && e.add && '[^' + [...e].join('') + ']') || e || '.').join('')
+      this._includePat = new RegExp(`^${containsRe}${allowedRe}$`)
     }
     return this._includePat
   }
@@ -89,13 +79,6 @@ class WordleHelper {
       this._generate = perms.filter(w => w.match(this.includePat))
     }
     return this._generate
-  }
-
-  get remain() {
-    if (this._remain === undefined) {
-      this._remain = deleteChars(ALL_CHARS, this.tried)
-    }
-    return this._remain
   }
 
   get charHist() {
@@ -142,17 +125,6 @@ class WordleHelper {
       }
     }
     return this._suggest
-  }
-
-  get debug() {
-    return [
-      this._hint,
-      this.tried,
-      this.got,
-      this.allowed,
-      this.excludePat,
-      this.includePat
-    ]
   }
 }
 
