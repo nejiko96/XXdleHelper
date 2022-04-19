@@ -1,7 +1,3 @@
-// const escapeRe = (str) => {
-//   return str.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&')
-// }
-
 const deleteChars = (str, chars) => {
   return str.replace(new RegExp(`[${chars}]`, 'g'), '')
 }

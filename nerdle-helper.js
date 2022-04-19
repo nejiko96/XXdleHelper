@@ -117,8 +117,8 @@ class NerdleHelper {
     })
     this._allowed = arr
     this._digits = selectChars(this._got, ALL_DIGITS)
-    this._ops = [...selectChars(this._got, ALL_OPS)]
     this._otherDigits = deleteChars(ALL_DIGITS, this._digits)
+    this._ops = [...selectChars(this._got, ALL_OPS)]
   }
 
   get got() {
@@ -133,6 +133,14 @@ class NerdleHelper {
     return this._digits
   }
 
+  get otherDigits() {
+    return this._otherDigits
+  }
+
+  get ops() {
+    return this._ops
+  }
+
   get nums() {
     if (this._nums === undefined) {
       const ds = new Set([...this.digits])
@@ -144,14 +152,6 @@ class NerdleHelper {
       this._nums = zero.concat(nonzero)
     }
     return this._nums
-  }
-
-  get ops() {
-    return this._ops
-  }
-
-  get otherDigits() {
-    return this._otherDigits
   }
 
   get excludePat() {
