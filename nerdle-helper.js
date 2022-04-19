@@ -96,15 +96,15 @@ class Parser {
 }
 
 class NerdleHelper {
-  static __samples = samplesRaw.split('\n')
+  static #SAMPLES = samplesRaw.split('\n')
 
   static get suggest() {
-    return NerdleHelper.__samples[Math.floor(Math.random() * NerdleHelper.__samples.length)]
+    return NerdleHelper.#SAMPLES[Math.floor(Math.random() * NerdleHelper.#SAMPLES.length)]
   }
 
   constructor(hint) {
     const hs = hint.match(/[0-9+*/=-](!|\?)?/g) || []
-    this._got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
+    this.got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
     const arr = new Array(8).fill(null)
     hs.forEach((h, i) => {
       const [c, m] = [...h]
@@ -115,30 +115,10 @@ class NerdleHelper {
         (arr[j] ||= new Set()).add && arr[j].add(c)
       }
     })
-    this._allowed = arr
-    this._digits = selectChars(this._got, ALL_DIGITS)
-    this._otherDigits = deleteChars(ALL_DIGITS, this._digits)
-    this._ops = [...selectChars(this._got, ALL_OPS)]
-  }
-
-  get got() {
-    return this._got
-  }
-
-  get allowed() {
-    return this._allowed
-  }
-
-  get digits() {
-    return this._digits
-  }
-
-  get otherDigits() {
-    return this._otherDigits
-  }
-
-  get ops() {
-    return this._ops
+    this.allowed = arr
+    this.digits = selectChars(this.got, ALL_DIGITS)
+    this.otherDigits = deleteChars(ALL_DIGITS, this.digits)
+    this.ops = [...selectChars(this.got, ALL_OPS)]
   }
 
   get nums() {
@@ -155,10 +135,7 @@ class NerdleHelper {
   }
 
   get excludePat() {
-    if (this._excludePat === undefined) {
-      this._excludePat = new RegExp(`[_${this.otherDigits}]`)
-    }
-    return this._excludePat
+    return this._excludePat ||= new RegExp(`[_${this.otherDigits}]`)
   }
 
   get includePat() {

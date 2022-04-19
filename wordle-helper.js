@@ -4,12 +4,12 @@ import { deleteChars, selectChars, uniq, permutation } from './util'
 const ALL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class WordleHelper {
-  static __words = wordsRaw.split('\n')
+  static #WORDS = wordsRaw.split('\n')
 
   constructor(hint) {
     const hs = hint.toUpperCase().match(/[A-Z](!|\?)?/g) || []
-    this._tried = uniq(hs.map(h => h[0])).join('')
-    this._got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
+    this.tried = uniq(hs.map(h => h[0])).join('')
+    this.got = uniq(hs.filter(h => h[1]).map(h => h[0])).join('')
     const arr = new Array(5).fill(null)
     hs.forEach((h, i) => {
       const [c, m] = [...h]
@@ -20,33 +20,13 @@ class WordleHelper {
         (arr[j] ||= new Set()).add && arr[j].add(c)
       }
     })
-    this._allowed = arr
-    this._others = deleteChars(this._tried, this._got)
-    this._remain = deleteChars(ALL_CHARS, this.tried)
-  }
-
-  get tried() {
-    return this._tried
-  }
-
-  get got() {
-    return this._got
-  }
-
-  get allowed() {
-    return this._allowed
-  }
-
-  get others() {
-    return this._others
-  }
-
-  get remain() {
-    return this._remain
+    this.allowed = arr
+    this.others = deleteChars(this.tried, this.got)
+    this.remain = deleteChars(ALL_CHARS, this.tried)
   }
 
   get words() {
-    return WordleHelper.__words
+    return WordleHelper.#WORDS
   }
 
   get excludePat() {
@@ -59,7 +39,7 @@ class WordleHelper {
   get includePat() {
     if (this._includePat === undefined) {
       const containsRe = [...this.got].map(c => `(?=.*${c})`).join('')
-      const allowedRe = this._allowed.map(e => (e && e.add && '[^' + [...e].join('') + ']') || e || '.').join('')
+      const allowedRe = this.allowed.map(e => (e && e.add && '[^' + [...e].join('') + ']') || e || '.').join('')
       this._includePat = new RegExp(`^${containsRe}${allowedRe}$`)
     }
     return this._includePat
@@ -105,7 +85,7 @@ class WordleHelper {
 
   get suggest() {
     if (this._suggest === undefined) {
-      if (this.search.length === 1 || this.search.length === 2) {
+      if (this.search.length >= 1 || this.search.length <= 2) {
         this._suggest = []
       } else {
         const ch = this.charHist
