@@ -25,14 +25,6 @@ Set.prototype.difference = function(setB) {
   }
   return difference;
 }
-
-class ParseError extends Error {
-  constructor(...args) {
-    super(...args)
-    this.name = 'ParseError'
-  }
-}
-
 class Parser {
   constructor(tokens) {
     this._tokens = tokens
@@ -49,10 +41,9 @@ class Parser {
 
   number() {
     const x = this.peek()
-    if (x.match(/\D+/)) throw new ParseError(`found ${x} where number is expected.`)
 
     this.consume()
-    return parseInt(x, 10)
+    return { d: 1, n: parseInt(x, 10)}
   }
 
   term() {
@@ -61,14 +52,13 @@ class Parser {
       switch (this.peek()) {
         case '*':
           this.consume()
-          x *= this.number()
+          const y = this.number()
+          x = { d: x.d * y.d, n: x.n * y.n }
           continue
         case '/':
           this.consume()
-          const y = this.number()
-          if (y === 0) throw new ParseError('divide by zero')
-          if (x % y) throw new ParseError(`${x} can't be divided by ${y}`)
-          x /= y
+          const z = this.number()
+          x = { d: x.d * z.n, n: x.n * z.d }
           continue
       }
       break
@@ -82,11 +72,13 @@ class Parser {
       switch (this.peek()) {
         case '+':
           this.consume()
-          x += this.term()
+          const y = this.term()
+          x = { d: x.d * y.d, n: x.n * y.d + x.d * y.n }
           continue
         case '-':
           this.consume()
-          x -= this.term()
+          const z = this.term()
+          x = { d: x.d * z.d, n: x.n * z.d - x.d * z.n }
           continue
       }
       break
@@ -151,7 +143,11 @@ class NerdleHelper {
 
   #chk(tokens) {
     try {
-      const ans = new Parser(tokens).expr().toString()
+      const r = new Parser(tokens).expr()
+      if (r.d === 0) return
+      if (r.n % r.d) return
+
+      const ans = (r.n / r.d).toString()
       if (ans.match(this.excludePat)) return
 
       const eq = `${tokens.join('')}=${ans}`

@@ -1,10 +1,6 @@
-const deleteChars = (str, chars) => {
-  return str.replace(new RegExp(`[${chars}]`, 'g'), '')
-}
+const deleteChars = (str, chars) => str.replace(new RegExp(`[${chars}]`, 'g'), '')
 
-const selectChars = (str, chars) => {
-  return str.replace(new RegExp(`[^${chars}]`, 'g'), '')
-}
+const selectChars = (str, chars) => str.replace(new RegExp(`[^${chars}]`, 'g'), '')
 
 const uniq = (obj) => {
   if (typeof(obj) === 'string') {
