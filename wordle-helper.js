@@ -85,7 +85,7 @@ class WordleHelper {
 
   get suggest() {
     if (this._suggest === undefined) {
-      if (this.search.length >= 1 || this.search.length <= 2) {
+      if (this.search.length >= 1 && this.search.length <= 2) {
         this._suggest = []
       } else {
         const ch = this.charHist
