@@ -82,6 +82,7 @@ $('#frmNdl').on('submit', () => {
 })
 
 $('#btnNdlClear').on('click', () => {
+  ndlSuggest()
   $('#txtNdlHint,#lblNdlResult').val('')
 })
 
