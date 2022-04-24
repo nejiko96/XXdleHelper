@@ -55,10 +55,6 @@ https://ja.vitejs.dev/
     "deploy": "vite build && gh-pages -d dist"
   },
   ```
-- デプロイ
-  ```
-  yarn deploy
-  ```
 - GitHubにリポジトリを置く
 - ```リポジトリ>Settings>Pages``` で公開するブランチとして ```gh-pages``` を指定
 - GitHub PagesのURLはサブディレクトリになっているので、  
@@ -69,3 +65,7 @@ https://ja.vitejs.dev/
       base: ''
     }
     ```
+- デプロイ
+  ```
+  yarn deploy
+  ```
