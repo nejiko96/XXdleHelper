@@ -66,6 +66,7 @@ $('#frmWdl').on('submit', () => {
 
 $('#btnWdlClear').on('click', () => {
   $('#txtWdlHint,#lblWdlResult,#lblWdlSuggestion').val('')
+  wdlRun()
 })
 
 $('#txtWdlHint').on('keydown', () => {
